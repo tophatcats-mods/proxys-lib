@@ -86,7 +86,7 @@ public class MistEvent {
                 pos.setPos(playerX + x, 0, playerZ + z);
                 Biome biome = world.getBiome(pos);
                 if (biome instanceof MistyBiome) {
-                    float distancePart = ((MistyBiome) biome).getFogDensity(pos);
+                    float distancePart = ((MistyBiome) biome).getMistDensity(pos);
                     float weightPart = 1;
 
                     if (x == -distance) {
@@ -199,7 +199,7 @@ public class MistEvent {
                 Biome biome = world.getBiome(pos);
 
                 if (biome instanceof MistyBiome) {
-                    int mistColour = ((MistyBiome) biome).getFogColor(pos);
+                    int mistColour = ((MistyBiome) biome).getMistColor(pos);
 
                     if (mistColour >= 0) {
                         double rPart = (mistColour & 0xFF0000) >> 16;
