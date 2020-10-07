@@ -5,7 +5,7 @@
   "description": "A library mod for my other mods.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://mcmoddev.com",
+  "url": "https://tophat.cat",
   "updateUrl": "https://www.curseforge.com/minecraft/mc-mods/proxys-lib",
   "authorList": ["ProxyNeko"],
   "credits": "ProxyNeko",
