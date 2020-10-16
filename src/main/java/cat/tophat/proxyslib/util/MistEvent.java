@@ -1,7 +1,7 @@
-package com.mcmoddev.proxyslib.util;
+package cat.tophat.proxyslib.util;
 
-import com.mcmoddev.proxyslib.ProxysLib;
-import com.mcmoddev.proxyslib.world.biome.MistyBiome;
+import cat.tophat.proxyslib.ProxysLib;
+import cat.tophat.proxyslib.api.IMistyBiome;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -85,8 +85,8 @@ public class MistEvent {
             for (int z = -distance; z <= distance; ++z) {
                 pos.setPos(playerX + x, 0, playerZ + z);
                 Biome biome = world.getBiome(pos);
-                if (biome instanceof MistyBiome) {
-                    float distancePart = ((MistyBiome) biome).getMistDensity(pos);
+                if (biome instanceof IMistyBiome) {
+                    float distancePart = ((IMistyBiome) biome).getMistDensity(pos);
                     float weightPart = 1;
 
                     if (x == -distance) {
@@ -198,8 +198,8 @@ public class MistEvent {
                 pos.setPos(playerX + x, 0, playerZ + z);
                 Biome biome = world.getBiome(pos);
 
-                if (biome instanceof MistyBiome) {
-                    int mistColour = ((MistyBiome) biome).getMistColor(pos);
+                if (biome instanceof IMistyBiome) {
+                    int mistColour = ((IMistyBiome) biome).getMistColor(pos);
 
                     if (mistColour >= 0) {
                         double rPart = (mistColour & 0xFF0000) >> 16;

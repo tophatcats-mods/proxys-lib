@@ -1,4 +1,4 @@
-package com.mcmoddev.proxyslib.items;
+package cat.tophat.proxyslib.items;
 
 import net.minecraft.item.ItemPickaxe;
 

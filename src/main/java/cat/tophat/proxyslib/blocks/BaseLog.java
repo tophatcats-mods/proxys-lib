@@ -1,4 +1,4 @@
-package com.mcmoddev.proxyslib.blocks;
+package cat.tophat.proxyslib.blocks;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.BlockStateContainer;

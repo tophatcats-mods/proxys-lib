@@ -1,4 +1,4 @@
-package com.mcmoddev.proxyslib.blocks;
+package cat.tophat.proxyslib.blocks;
 
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks;

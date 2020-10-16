@@ -1,4 +1,4 @@
-package com.mcmoddev.proxyslib.blocks;
+package cat.tophat.proxyslib.blocks;
 
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
