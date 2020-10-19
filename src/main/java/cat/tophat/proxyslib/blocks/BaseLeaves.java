@@ -51,8 +51,8 @@ public class BaseLeaves extends BlockLeaves {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
-        return Blocks.LEAVES.getRenderLayer();
+    public BlockRenderLayer getBlockLayer() {
+        return Blocks.LEAVES.getBlockLayer();
     }
 
     @Override

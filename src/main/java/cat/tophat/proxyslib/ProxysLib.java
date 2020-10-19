@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
         modid = ProxysLib.MODID,
         version = ProxysLib.VERSION,
         updateJSON = "https://tophat.cat/proxys-lib/update.json",
-        acceptedMinecraftVersions = "[1.12, 1.12.2]")
+        acceptedMinecraftVersions = "[1.11, 1.11.2]")
 @Mod.EventBusSubscriber
 public class ProxysLib {
 

@@ -12,7 +12,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '2.2-SNAPSHOT'
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
         classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: "${project.schoomp_version}"
     }
@@ -21,7 +21,7 @@ buildscript {
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.matthewprenger.cursegradle'
 
 import com.diluv.schoomp.Webhook
@@ -45,34 +45,12 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: project.mappings_channel, version: "${project.mappings_version}-${project.mappings_mc_version}"
+    version = "${project.mc_version}-${project.forge_version}"
+    runDir = "run"
+
+    mappings = "${project.mappings_channel}_${project.mappings_version}"
     if (project.hasProperty('at_file')) {
         accessTransformer = file("src/main/resources/META-INF/${project.at_file}.cfg")
-    }
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', "info"
-            mods.create("${project.mod_id}").source(sourceSets.main)
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', "info"
-            mods.create("${project.mod_id}").source(sourceSets.main)
-        }
-
-        //Used for Data Generators should you need to use them to create recipes, blockstate files and other resources.
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'info'
-            args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/')
-            mods.create("${project.mod_id}").source(sourceSets.main)
-        }
     }
 }
 

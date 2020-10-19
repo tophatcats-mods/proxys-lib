@@ -35,7 +35,7 @@ public class BaseDoor extends BlockDoor {
 
     private Item getDoorItem() {
         if (doorItem == null) {
-            doorItem = Item.REGISTRY.getObject(new ResourceLocation(getRegistryName().getNamespace()));
+            doorItem = Item.REGISTRY.getObject(new ResourceLocation(getRegistryName().getResourceDomain()));
         }
         return doorItem;
     }

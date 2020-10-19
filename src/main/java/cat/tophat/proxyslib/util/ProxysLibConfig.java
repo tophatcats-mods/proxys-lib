@@ -1,7 +1,6 @@
 package cat.tophat.proxyslib.util;
 
 import cat.tophat.proxyslib.ProxysLib;
-import cat.tophat.spookybiomes.SpookyBiomes;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -27,7 +26,7 @@ public class ProxysLibConfig {
     @SubscribeEvent
     public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.getModID().equals(ProxysLib.MODID)) {
-            ConfigManager.sync(SpookyBiomes.MODID, Config.Type.INSTANCE);
+            ConfigManager.sync(ProxysLib.MODID, Config.Type.INSTANCE);
         }
     }
 }

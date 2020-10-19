@@ -69,8 +69,8 @@ public abstract class BaseSlab extends BlockSlab {
     }
 
     @Override
-    public String getTranslationKey(int meta) {
-        return super.getTranslationKey();
+    public String getUnlocalizedName(int meta) {
+        return super.getUnlocalizedName();
     }
 
     @Override

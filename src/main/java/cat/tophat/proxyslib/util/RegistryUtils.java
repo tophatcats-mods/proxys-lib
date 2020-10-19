@@ -23,7 +23,7 @@ public class RegistryUtils {
     public static Block nameBlock(Block block, String modid, String name, CreativeTabs tab) {
         block
                 .setRegistryName(name)
-                .setTranslationKey(modid + "." + name)
+                .setUnlocalizedName(modid + "." + name)
                 .setCreativeTab(tab);
         return block;
     }
@@ -49,7 +49,7 @@ public class RegistryUtils {
     public static Item nameItem(Item item, String modid, String name, CreativeTabs tab) {
         item
                 .setRegistryName(name)
-                .setTranslationKey(modid + "." + name)
+                .setUnlocalizedName(modid + "." + name)
                 .setCreativeTab(tab);
         return item;
     }

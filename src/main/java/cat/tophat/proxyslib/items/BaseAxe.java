@@ -9,6 +9,6 @@ import net.minecraft.item.ItemAxe;
 public class BaseAxe extends ItemAxe {
 
 	public BaseAxe(ToolMaterial material) {
-		super(material, material.getAttackDamage(), 0.0F);
+		super(material, material.getDamageVsEntity(), 0.0F);
 	}
 }
