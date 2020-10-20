@@ -1,6 +1,5 @@
 package cat.tophat.proxyslib.util;
 
-import cat.tophat.proxyslib.ProxysLib;
 import cat.tophat.proxyslib.api.IMistyBiome;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
-@Mod.EventBusSubscriber(modid = ProxysLib.MODID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(value = Side.CLIENT)
 public class MistEvent {
 
     private static double mistX, mistZ;
@@ -51,13 +50,13 @@ public class MistEvent {
                 mixedColor = getFogBlendColor(world, player, x, y, z, event.getRed(), event.getGreen(), event.getBlue(), event.getRenderPartialTicks());
             }
             if (world.provider instanceof WorldProviderHell) {
-                event.setRed((float) mixedColor.x * 20.5F);
-                event.setGreen((float) mixedColor.y * 20.5F);
-                event.setBlue((float) mixedColor.z * 20.5F);
+                event.setRed((float) mixedColor.xCoord * 20.5F);
+                event.setGreen((float) mixedColor.yCoord * 20.5F);
+                event.setBlue((float) mixedColor.zCoord * 20.5F);
             } else {
-                event.setRed((float) mixedColor.x);
-                event.setGreen((float) mixedColor.y);
-                event.setBlue((float) mixedColor.z);
+                event.setRed((float) mixedColor.xCoord);
+                event.setGreen((float) mixedColor.yCoord);
+                event.setBlue((float) mixedColor.zCoord);
             }
         }
     }
@@ -280,9 +279,9 @@ public class MistEvent {
         gBiomeFog *= gScale / weightBiomeFog;
         bBiomeFog *= bScale / weightBiomeFog;
         Vec3d processedColor = postProcessColor(world, playerEntity, rBiomeFog, gBiomeFog, bBiomeFog, renderPartialTicks);
-        rBiomeFog = processedColor.x;
-        gBiomeFog = processedColor.y;
-        bBiomeFog = processedColor.z;
+        rBiomeFog = processedColor.xCoord;
+        gBiomeFog = processedColor.yCoord;
+        bBiomeFog = processedColor.zCoord;
 
         double weightMixed = (distance * 2) * (distance * 2);
         double weightDefault = weightMixed - weightBiomeFog;
