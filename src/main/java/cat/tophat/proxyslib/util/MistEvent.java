@@ -1,12 +1,15 @@
 package cat.tophat.proxyslib.util;
 
+import org.lwjgl.opengl.GL11;
+import org.spongepowered.asm.mixin.MixinEnvironment.Side;
+
 import cat.tophat.proxyslib.ProxysLib;
 import cat.tophat.proxyslib.api.IMistyBiome;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,10 +23,8 @@ import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.ForgeModContainer;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.opengl.GL11;
 
 @Mod.EventBusSubscriber(modid = ProxysLib.MODID, value = Side.CLIENT)
 public class MistEvent {

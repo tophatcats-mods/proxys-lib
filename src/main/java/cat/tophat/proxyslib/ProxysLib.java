@@ -1,65 +1,100 @@
 package cat.tophat.proxyslib;
 
-import cat.tophat.proxyslib.api.IMistyBiome;
-import cat.tophat.proxyslib.util.ProxysLibConfig;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import cat.tophat.proxyslib.util.ProxysLibConfig;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * The main class for this mod.
  */
-@Mod(
-        name = ProxysLib.NAME,
-        modid = ProxysLib.MODID,
-        version = ProxysLib.VERSION,
-        updateJSON = "https://tophat.cat/proxys-lib/update.json",
-        acceptedMinecraftVersions = "[1.12, 1.12.2]")
-@Mod.EventBusSubscriber
+@Mod(ProxysLib.MODID)
 public class ProxysLib {
 
-    /**
-     * The mods string ID for use in some minor things like the logger.
-     */
-    public static final String NAME = "Proxy's Lib";
-
+	public ProxysLib() {
+		IEventBus mod = FMLJavaModLoadingContext.get().getModEventBus(),
+				forge = MinecraftForge.EVENT_BUS;
+		
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ProxysLibConfig.SERVER_SPECIFICATION);
+		mod.addListener(this::setup);
+		forge.addListener(this::onPlayerUpdate);
+	}
+	
     /**
      * The mods ID for Forge to use
      */
     public static final String MODID = "proxyslib";
 
     /**
-     * The mods version number
-     */
-    public static final String VERSION = "1.4.0";
-
-    /**
      * Create a logger for the mod.
      */
-    public static final Logger LOGGER = LogManager.getLogger(NAME);
+    public static final Logger LOGGER = LogManager.getLogger("Proxy's Lib");
 
     /**
      * Add a new damage source for poisonous mist.
      */
     public static final DamageSource DAMAGE_SOURCE_MIST = new DamageSource("poisonous_mist");
 
-    @SubscribeEvent
-    public static void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
-        EntityLivingBase entity = event.getEntityLiving();
+    /**
+     * Stores the temporary fire information until the actual fire info is updated. This is null after updating.
+     */
+    private static Map<Supplier<? extends Block>, Pair<Integer, Integer>> fire_info = new HashMap<>();
+    
+    /**
+     * A method used to store temporary fire info and then update the information in the method.
+     * 
+     * @param blockSupplier The current deferred block
+     * @param encouragement The block's encouragement
+     * @param flammability The block's flammability
+     */
+    public static synchronized final void setFireInfo(Supplier<? extends Block> blockSupplier, int encouragement, int flammability) {
+    	fire_info.put(blockSupplier, Pair.of(encouragement, flammability));
+    }
+    
+    private void setup(final FMLCommonSetupEvent event) {
+    	event.enqueueWork(() -> {
+    		FireBlock fire = (FireBlock) Blocks.FIRE;
+    		Method setFireInfo = ObfuscationReflectionHelper.findMethod(FireBlock.class, "func_180686_a", Block.class, Integer.class, Integer.class);
+    		fire_info.forEach((supplier, pair) -> {
+    			try {
+					setFireInfo.invoke(fire, supplier.get(), pair.getLeft(), pair.getRight());
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					LOGGER.error("Something went wrong trying to set the fire info for {} with encouragement {} and flammability {}!", supplier.get().getRegistryName(), pair.getLeft(), pair.getRight());
+					e.printStackTrace();
+				}
+    		});
+        	fire_info = null;
+    	});
+    }
+    
+    //TODO: Update
+    private void onPlayerUpdate(final LivingEvent.LivingUpdateEvent event) {
+        /*LivingEntity entity = event.getEntityLiving();
         World world = entity.world;
         Biome biome = world.getBiome(new BlockPos((entity).posX, (entity).posY, (entity).posZ));
         if (ProxysLibConfig.isPoisonousMistEnabled
-                && entity instanceof EntityPlayer
-                && !((EntityPlayer) entity).isCreative()
+                && entity instanceof PlayerEntity
+                && !((PlayerEntity) entity).isCreative()
                 && (entity).ticksExisted % ProxysLibConfig.timeBetweenPoisonDamageInTicks == 0
                 && ((biome) instanceof IMistyBiome)) {
 
@@ -68,6 +103,6 @@ public class ProxysLib {
                     entity.attackEntityFrom(ProxysLib.DAMAGE_SOURCE_MIST, ProxysLibConfig.poisonDamageLevel);
                 }
             }
-        }
+        }*/
     }
 }
