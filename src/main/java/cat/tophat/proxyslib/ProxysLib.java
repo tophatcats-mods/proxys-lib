@@ -107,6 +107,16 @@ public class ProxysLib {
     }
     
     /**
+     * Adds a new misty biome.
+     * 
+     * @param location The name of the biome
+     * @param biome The biome information
+     */
+    public static synchronized void addMistyBiome(ResourceLocation location, IMistyBiome biome) {
+    	BIOME_INFO.put(location, biome);
+    }
+    
+    /**
      * Grabs the misty biome information if present.
      * Returns null otherwise.
      * 
@@ -162,7 +172,8 @@ public class ProxysLib {
     private static void revalidateCache() {
     	ServerConfig config = ProxysLibConfig.SERVER;
     	isPoisonousMistEnabled = config.isPoisonousMistEnabled.get();
-    	poisonDamageLevel = config.poisonDamageLevel.get();
+    	double temp = config.poisonDamageLevel.get();
+    	poisonDamageLevel = (float) temp;
     	timeBetweenPoisonDamageInTicks = config.timeBetweenPoisonDamageInTicks.get();
     }
 }

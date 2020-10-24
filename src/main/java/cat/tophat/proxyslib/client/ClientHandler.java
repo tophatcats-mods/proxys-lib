@@ -19,6 +19,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -92,7 +93,7 @@ public class ClientHandler {
         for (int x = -distance; x <= distance; ++x) {
             for (int z = -distance; z <= distance; ++z) {
                 pos.setPos(playerX + x, 0, playerZ + z);
-                @Nullable IMistyBiome biome = ProxysLib.getMistyBiome(world.getBiome(pos).getRegistryName());
+                @Nullable IMistyBiome biome = ProxysLib.getMistyBiome(mc.getConnection().func_239165_n_().getRegistry(Registry.BIOME_KEY).getKey(world.getBiome(pos)));
                 if (biome != null) {
                     float distancePart = biome.getMistDensity(pos);
                     float weightPart = 1;
@@ -194,7 +195,7 @@ public class ClientHandler {
         for (int x = -distance; x <= distance; ++x) {
             for (int z = -distance; z <= distance; ++z) {
                 pos.setPos(playerX + x, 0, playerZ + z);
-                @Nullable IMistyBiome biome = ProxysLib.getMistyBiome(world.getBiome(pos).getRegistryName());
+                @Nullable IMistyBiome biome = ProxysLib.getMistyBiome(mc.getConnection().func_239165_n_().getRegistry(Registry.BIOME_KEY).getKey(world.getBiome(pos)));
 
                 if (biome != null) {
                     int mistColour = biome.getMistColor(pos);
