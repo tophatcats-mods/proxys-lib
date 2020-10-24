@@ -6,18 +6,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cat.tophat.proxyslib.api.IMistyBiome;
+import cat.tophat.proxyslib.client.ClientHandler;
 import cat.tophat.proxyslib.util.ProxysLibConfig;
+import cat.tophat.proxyslib.util.ProxysLibConfig.ServerConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -36,7 +48,10 @@ public class ProxysLib {
 				forge = MinecraftForge.EVENT_BUS;
 		
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ProxysLibConfig.SERVER_SPECIFICATION);
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHandler.handle(mod, forge));
 		mod.addListener(this::setup);
+		mod.addListener(this::load);
+		mod.addListener(this::reload);
 		forge.addListener(this::onPlayerUpdate);
 	}
 	
@@ -61,6 +76,26 @@ public class ProxysLib {
     private static Map<Supplier<? extends Block>, Pair<Integer, Integer>> fire_info = new HashMap<>();
     
     /**
+     * Stores any biome information if they are part of a misty biome
+     */
+    private static final Map<ResourceLocation, IMistyBiome> BIOME_INFO = new HashMap<>();
+    
+    /**
+     * Stores if the poisonous mist is enabled.
+     */
+    private static boolean isPoisonousMistEnabled = true;
+    
+    /**
+     * Stores the amount of damage the player should take per unit of time.
+     */
+    private static float poisonDamageLevel = 1F;
+    
+    /**
+     * Stores the amount of time between posion damage.
+     */
+    private static int timeBetweenPoisonDamageInTicks = 75;
+    
+    /**
      * A method used to store temporary fire info and then update the information in the method.
      * 
      * @param blockSupplier The current deferred block
@@ -69,6 +104,18 @@ public class ProxysLib {
      */
     public static synchronized final void setFireInfo(Supplier<? extends Block> blockSupplier, int encouragement, int flammability) {
     	fire_info.put(blockSupplier, Pair.of(encouragement, flammability));
+    }
+    
+    /**
+     * Grabs the misty biome information if present.
+     * Returns null otherwise.
+     * 
+     * @param location The name of the biome.
+     * @return The associate misty biome information.
+     */
+    @Nullable
+    public static IMistyBiome getMistyBiome(ResourceLocation location) {
+    	return BIOME_INFO.get(location);
     }
     
     private void setup(final FMLCommonSetupEvent event) {
@@ -87,22 +134,35 @@ public class ProxysLib {
     	});
     }
     
-    //TODO: Update
     private void onPlayerUpdate(final LivingEvent.LivingUpdateEvent event) {
-        /*LivingEntity entity = event.getEntityLiving();
-        World world = entity.world;
-        Biome biome = world.getBiome(new BlockPos((entity).posX, (entity).posY, (entity).posZ));
-        if (ProxysLibConfig.isPoisonousMistEnabled
+        LivingEntity entity = event.getEntityLiving();
+        if (isPoisonousMistEnabled
                 && entity instanceof PlayerEntity
                 && !((PlayerEntity) entity).isCreative()
-                && (entity).ticksExisted % ProxysLibConfig.timeBetweenPoisonDamageInTicks == 0
-                && ((biome) instanceof IMistyBiome)) {
+                && (entity).ticksExisted % timeBetweenPoisonDamageInTicks == 0) {
+        	World world = entity.world;
+        	@Nullable IMistyBiome biome = getMistyBiome(world.getBiome(entity.getPosition()).getRegistryName());
 
-            if (((IMistyBiome) biome).isMistPoisonous()) {
-                if (world.getLightFor(EnumSkyBlock.BLOCK, entity.getPosition()) <= 7 || world.getLightFor(EnumSkyBlock.SKY, entity.getPosition()) > 10) {
-                    entity.attackEntityFrom(ProxysLib.DAMAGE_SOURCE_MIST, ProxysLibConfig.poisonDamageLevel);
+            if (biome != null && biome.isMistPoisonous()) {
+                if (world.getLightFor(LightType.BLOCK, entity.getPosition()) <= 7 || world.getLightFor(LightType.SKY, entity.getPosition()) > 10) {
+                    entity.attackEntityFrom(ProxysLib.DAMAGE_SOURCE_MIST, poisonDamageLevel);
                 }
             }
-        }*/
+        }
+    }
+    
+    private void load(final ModConfig.Loading event) {
+    	revalidateCache();
+    }
+    
+    private void reload(final ModConfig.Reloading event) {
+    	revalidateCache();
+    }
+    
+    private static void revalidateCache() {
+    	ServerConfig config = ProxysLibConfig.SERVER;
+    	isPoisonousMistEnabled = config.isPoisonousMistEnabled.get();
+    	poisonDamageLevel = config.poisonDamageLevel.get();
+    	timeBetweenPoisonDamageInTicks = config.timeBetweenPoisonDamageInTicks.get();
     }
 }
