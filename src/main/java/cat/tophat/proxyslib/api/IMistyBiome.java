@@ -8,16 +8,6 @@ import net.minecraft.util.math.BlockPos;
 public interface IMistyBiome {
 
     /**
-     * The colour the mist is.
-     */
-    public int mistColor = -1;
-
-    /**
-     * The density/thickness of the mist.
-     */
-    public float mistDensity = 1.0F;
-
-    /**
      * Is the mist poisonous to players and mobs.
      *
      * @return boolean
@@ -31,7 +21,7 @@ public interface IMistyBiome {
      * @return Set to 1.0F to have no mist at all.
      */
     default float getMistDensity(BlockPos playerPos) {
-        return mistDensity;
+        return 1F;
     }
 
     /**
@@ -39,6 +29,6 @@ public interface IMistyBiome {
      * @return -1 for no color.
      */
     default int getMistColor(BlockPos playerPos) {
-        return mistColor;
+        return -1;
     }
 }

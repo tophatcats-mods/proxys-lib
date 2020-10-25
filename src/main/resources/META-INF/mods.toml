@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="LGPL-v2.1"
+updateJSONURL="https://tophat.cat/proxys-lib/update.json"
+issueTrackerURL="https://github.com/ProxyNeko/proxys-lib/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/proxys-lib"
+#logoFile=""
+credits="ProxyNeko"
+authors="ProxyNeko"
+
+[[mods]]
+modId="proxyslib"
+version="${file.jarVersion}"
+displayName="Proxys Lib"
+description='''
+A library mod for my other mods.
+'''
+
+[[dependencies.proxyslib]]
+   modId="forge"
+   mandatory=true
+   versionRange="[34,)"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies.proxyslib]]
+   modId="minecraft"
+   mandatory=true
+   versionRange="[1.16.3]"
+   ordering="NONE"
+   side="BOTH"
