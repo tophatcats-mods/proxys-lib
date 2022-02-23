@@ -1,4 +1,4 @@
-Spooky Biomes - https://tophatcat.dev/spooky-biomes
+Spooky Biomes - https://tophatcat.dev/kiris-lib
 Copyright (C) 2016-${year} <KiriCattus>
 
 This library is free software; you can redistribute it and/or
