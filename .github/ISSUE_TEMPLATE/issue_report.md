@@ -9,7 +9,7 @@ assignees: 'ProxyNeko'
 <!-- Thank you for reporting! -->
 
 <!-- For support with crashes and issues, please ask for help in my discord server first, this is often quicker for small issues: -->
-<!-- https://discord.tophat.cat -->
+<!-- https://discord.tophatcat.dev -->
 
 **Minecraft Version:** {Minecraft version}
 
