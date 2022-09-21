@@ -1,29 +1,40 @@
 pluginManagement {
+
     repositories {
+
+        maven {
+
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+
+        maven {
+
+            name = 'Sponge Snapshots'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+
+        maven {
+
+            name = 'Quilt (Release)'
+            url = 'https://maven.quiltmc.org/repository/release'
+        }
+
+        maven {
+
+            name = 'Quilt (Snapshot)'
+            url = 'https://maven.quiltmc.org/repository/snapshot'
+        }
+
+        maven {
+            name = 'Cotton'
+            url = 'https://server.bbkr.space/artifactory/libs-release/'
+        }
+
+        mavenCentral()
         gradlePluginPortal()
-        maven {
-            name 'MinecraftForge'
-            url 'https://maven.minecraftforge.net/'
-        }
-        maven {
-            name 'ParchmentMC'
-            url 'https://maven.parchmentmc.org'
-        }
-    }
-    resolutionStrategy {
-        eachPlugin {
-            switch (requested.id.toString()) {
-                case "net.minecraftforge.gradle": {
-                    useModule("${requested.id}:ForgeGradle:${requested.version}")
-                    break
-                }
-                case "org.spongepowered.mixin": {
-                    useModule("org.spongepowered:mixingradle:${requested.version}")
-                    break;
-                }
-            }
-        }
     }
 }
 
-rootProject.name = modid
+rootProject.name = 'kirislib'
+include("Common", "Forge", "Quilt")
