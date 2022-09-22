@@ -26,9 +26,14 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * This ONLY exists to be able to create stair blocks as Vanilla's
  * StairBlock constructor has protected access.
+ * I'd rather not Access Transform/Widen every time.
  */
 public class BasicStairBlock extends StairBlock {
 
+    /**
+     * @param blockState The planks block we use for our base.
+     * @param properties The blocks properties.
+     */
     public BasicStairBlock(final BlockState blockState, final Properties properties) {
         super(blockState, properties);
     }

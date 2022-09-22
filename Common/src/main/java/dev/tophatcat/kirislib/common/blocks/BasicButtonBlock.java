@@ -25,9 +25,13 @@ import net.minecraft.world.level.block.WoodButtonBlock;
 /**
  * This ONLY exists to be able to create button blocks as Vanilla's
  * WoodButtonBlock constructor has protected access.
+ * I'd rather not Access Transform/Widen every time.
  */
 public class BasicButtonBlock extends WoodButtonBlock {
 
+    /**
+     * @param properties The blocks properties.
+     */
     public BasicButtonBlock(final Properties properties) {
         super(properties);
     }

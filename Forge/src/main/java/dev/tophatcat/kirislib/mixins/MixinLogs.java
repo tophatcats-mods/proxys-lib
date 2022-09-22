@@ -35,17 +35,34 @@ import org.spongepowered.asm.mixin.Shadow;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
+/**
+ * Mixin our own BasicLogBlock class to add the Forge only method to enable log stripping.
+ */
 @Mixin(value = BasicLogBlock.class, remap = false)
 public abstract class MixinLogs extends RotatedPillarBlock {
 
+    /**
+     * The stripped variant of the log taken from the constructor for use on Forge, ignored on Quilt.
+     */
     @Shadow
     Supplier<? extends Block> strippedLogBlock;
 
-    public MixinLogs(final BlockBehaviour.Properties properties,
-                     final Supplier<? extends Block> strippedLogBlock) {
+    /**
+     * @param properties       Our blocks properties.
+     * @param strippedLogBlock The stripped variant of the current log.
+     */
+    @SuppressWarnings("unused")
+    public MixinLogs(final BlockBehaviour.Properties properties, final Supplier<? extends Block> strippedLogBlock) {
         super(properties);
     }
 
+    /**
+     * @param state      The current state.
+     * @param context    The use on context that the action was performed in.
+     * @param toolAction The action being performed by the tool.
+     * @param simulate   If {@code true}, no actions that modify the world in any way should be performed.
+     *                   If {@code false}, the world may be modified.
+     */
     @Nullable
     @Override
     public BlockState getToolModifiedState(BlockState state, UseOnContext context,

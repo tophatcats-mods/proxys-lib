@@ -26,9 +26,14 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 /**
  * This ONLY exists to be able to create sapling blocks as Vanilla's
  * SaplingBlock constructor has protected access.
+ * I'd rather not Access Transform/Widen every time.
  */
 public class BasicSaplingBlock extends SaplingBlock {
 
+    /**
+     * @param abstractTreeGrower The tree grower we want to use to grow this tree.
+     * @param properties The blocks properties.
+     */
     public BasicSaplingBlock(final AbstractTreeGrower abstractTreeGrower, final Properties properties) {
         super(abstractTreeGrower, properties);
     }

@@ -18,35 +18,21 @@
  * USA
  * https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  */
-package dev.tophatcat.kirislib;
+package dev.tophatcat.kirislib.common.blocks;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.minecraft.world.level.block.TrapDoorBlock;
 
 /**
- * Our common class with shared resources for the mod on Forge and Quilt.
+ * This ONLY exists to be able to create trap door blocks as Vanilla's
+ * TrapDoorBlock constructor has protected access.
+ * I'd rather not Access Transform/Widen every time.
  */
-public class KirisLibCommon {
+public class BasicTrapDoorBlock extends TrapDoorBlock {
 
     /**
-     * The mods ID used to register itself, and it's content.
+     * @param properties The blocks properties.
      */
-    public static final String MOD_ID = "kirislib";
-
-    /**
-     * The mods readable name used for logging.
-     */
-    public static final String MOD_NAME = "Kiris Lib";
-
-    /**
-     * Our logger for logging the goings-on of the mod.
-     */
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
-
-    /**
-     * The entry point for loading common code.
-     */
-    public KirisLibCommon() {
-        CosmeticFeatures.initCosmetics();
+    protected BasicTrapDoorBlock(final Properties properties) {
+        super(properties);
     }
 }

@@ -25,11 +25,23 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 
 import java.util.function.Supplier;
 
+/**
+ * BasicLogBlock used to create Logs that can be stripped for Forge.
+ * We can also use this class for Log objects on Quilt and
+ * the second argument in the constructor is ignored.
+ */
 public class BasicLogBlock extends RotatedPillarBlock {
 
+    /**
+     * The stripped variant of the log taken from the constructor for use on Forge, ignored on Quilt.
+     */
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final Supplier<? extends Block> strippedLogBlock;
 
+    /**
+     * @param properties       The blocks properties.
+     * @param strippedLogBlock The stripped variant of the current log.
+     */
     public BasicLogBlock(final Properties properties, final Supplier<? extends Block> strippedLogBlock) {
         super(properties);
         this.strippedLogBlock = strippedLogBlock;
