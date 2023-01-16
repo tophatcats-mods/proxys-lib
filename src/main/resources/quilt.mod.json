@@ -43,7 +43,6 @@
 	"modmenu": {
 		"links": {
 			"modmenu.discord": "${mod_discord}"
-		},
-		"badges": "library"
+		}
 	}
 }
