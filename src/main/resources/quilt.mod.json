@@ -4,7 +4,6 @@
 		"group": "${group}",
 		"id": "${mod_id}",
 		"version": "${version}",
-		"icon": "assets/${mod_id}/icon.png",
 		"metadata": {
 			"name": "${mod_name}",
 			"description": "${mod_description}",
@@ -23,11 +22,12 @@
 					"url": "${mod_source}/blob/dev/LICENSE.txt",
 					"description": "License for the code in this mod"
 				}
-			]
+			],
+			"icon": "assets/${mod_id}/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "dev.tophatcat.spookybiomes.SpookyBiomes"
+			"init": "dev.tophatcat.kirislib.KirisLib"
 		},
 		"depends": [
 			{
@@ -43,6 +43,7 @@
 	"modmenu": {
 		"links": {
 			"modmenu.discord": "${mod_discord}"
-		}
+		},
+		"badges": "library"
 	}
 }
