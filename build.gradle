@@ -6,10 +6,10 @@ plugins {
 	id 'idea'
 	id 'eclipse'
 	id 'maven-publish'
-	id 'org.quiltmc.loom' version '1.0.+'
+	id 'fabric-loom' version '1.3-SNAPSHOT'
 	id 'com.modrinth.minotaur' version '2.+'
 	id 'org.cadixdev.licenser' version '0.6.1'
-	id 'net.darkhax.curseforgegradle' version '1.0.11'
+	id 'net.darkhax.curseforgegradle' version '1.1.15'
 }
 
 archivesBaseName = mod_id
@@ -29,7 +29,12 @@ repositories {
 
 	maven {
 		name "Forge Maven"
-		url 'https://maven.minecraftforge.net/'
+		url "https://maven.minecraftforge.net/"
+	}
+
+	maven {
+		name "NeoForged Maven"
+		url "https://maven.neoforged.net/"
 	}
 
 	maven {
@@ -58,40 +63,23 @@ repositories {
 dependencies {
 	//The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
 	minecraft "com.mojang:minecraft:${minecraft_version}"
-	//mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
-	mappings loom.layered {
-		mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
-		officialMojangMappings()
-	}
-
-	//Quilt Loader
-	modImplementation "org.quiltmc:quilt-loader:${loader_version}"
-
-	//QSL Library Core
-	modImplementation "org.quiltmc.qsl:core:${qsl_version}+${minecraft_version}"
-
-	//QSL Module Resource Loader
-	modImplementation "org.quiltmc.qsl.core:resource_loader:${qsl_version}+${minecraft_version}"
-
-	//Quilted Fabric API
-	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fabric_api_version}-${minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	//Mod Menu dependency
 	modApi "com.terraformersmc:modmenu:${modmenu_version}"
-
-	//Kiri's Lib dependency
-	//modImplementation "maven.modrinth:kirislib:${kiris_lib_version}"
 }
 
 loom {
-	if (project.hasProperty('quilt_aws_enabled') && project.findProperty('quilt_aws_enabled').toBoolean()) {
+	if (project.hasProperty('fabric_aws_enabled') && project.findProperty('fabric_aws_enabled').toBoolean()) {
 		accessWidenerPath = file("src/main/resources/${mod_id}.accessWidener")
-		project.logger.debug('Quilt Access Widener are enabled for this project!!!')
+		project.logger.debug('Fabric Access Widener are enabled for this project!!!')
 	}
 	runs {
 		client {
 			client()
-			setConfigName("Quilt Client")
+			setConfigName("Fabric Client")
 			ideConfigGenerated(true)
 			runDir("run")
 
@@ -108,14 +96,14 @@ loom {
 
 		server {
 			server()
-			setConfigName("Quilt Server")
+			setConfigName("Fabric Server")
 			ideConfigGenerated(true)
 			runDir("runserver")
 			programArgs('--singleplayer', "yes", '--nogui', "true")
 		}
 
 		datagenClient {
-			inherit client
+			inherit server
 			name "Data Generation"
 			vmArg "-Dfabric-api.datagen"
 			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
@@ -129,7 +117,7 @@ loom {
 processResources {
 	def buildProps = project.properties.clone()
 
-	filesMatching(['quilt.mod.json', 'pack.mcmeta']) {
+	filesMatching(['fabric.mod.json']) {
 		expand buildProps
 	}
 }
@@ -138,7 +126,7 @@ sourceSets {
 	main {
 		resources {
 			srcDirs += [
-					'src/main/generated'
+				'src/main/generated'
 			]
 		}
 	}
@@ -161,19 +149,19 @@ java {
 
 	// If this mod is going to be a library, then it should also generate Javadocs in order to aid with development.
 	// Uncomment this line to generate them.
-	// withJavadocJar()
+	withJavadocJar()
 }
 
 var manifestAttributes = [
-		"Specification-Title"     : mod_name,
-		"Specification-Vendor"    : mod_author,
-		"Specification-Version"   : "1", // We are version 1 of ourselves
-		"Implementation-Title"    : mod_name,
-		"Implementation-Version"  : project.jar.archiveVersion,
-		"Implementation-Vendor"   : mod_author,
-		"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-		"Built-On-Java"           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-		"Build-On-Minecraft"      : minecraft_version
+	"Specification-Title"     : mod_name,
+	"Specification-Vendor"    : mod_author,
+	"Specification-Version"   : "1", // We are version 1 of ourselves
+	"Implementation-Title"    : mod_name,
+	"Implementation-Version"  : project.jar.archiveVersion,
+	"Implementation-Vendor"   : mod_author,
+	"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+	"Built-On-Java"           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+	"Build-On-Minecraft"      : minecraft_version
 ]
 
 jar {
@@ -222,7 +210,7 @@ license {
 }
 
 modrinth {
-	token = project.MODRINTH_TOKEN ?: "Invalid/No Modrinth API key could be found!"// This is the default.
+	token = project.MODRINTH_TOKEN ?: "Invalid/No Modrinth API key could be found!" // This is the default.
 	projectId = modrinth_project_id // This can be the project ID or the slug. Either will work!
 	versionNumber = version // You don't need to set this manually. Will fail if Modrinth has this version already
 	versionType = modrinth_release_type // This is the default -- can also be `beta` or `alpha`
@@ -230,12 +218,12 @@ modrinth {
 	changelog = rootProject.file("changelog.md").text
 	uploadFile = remapJar // With Loom, this MUST be set to `remapJar` instead of `jar`!
 	gameVersions = [minecraft_version] // Must be an array, even with only one version
-	loaders = ["quilt"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+	loaders = ["fabric", "quilt"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
 	dependencies { // A special DSL for creating dependencies
 		// scope.type
 		// The scope can be `required`, `optional`, `incompatible`, or `embedded`
 		// The type can either be `project` or `version`
-		required.project "qsl" // Creates a new required dependency on Fabric API
+		required.project "fabric-api" // Creates a new required dependency on Fabric API
 		optional.project "modmenu"
 	}
 	syncBodyFrom = rootProject.file("README.md").text
@@ -251,14 +239,11 @@ task curseforge(type: TaskPublishCurseForge) {
 
 	mainFile.displayName = "${archivesBaseName}-${version}"
 	mainFile.releaseType = curseforge_release_type
-	mainFile.addModLoader("Quilt")
+	mainFile.addModLoader("Fabric")
 	mainFile.addGameVersion(minecraft_version)
 	mainFile.addJavaVersion(curseforge_java_version)
-
-	//mainFile.addRequirement('fabric-api') //Fabric API slug
-	//mainFile.addEmbedded('cloth-config') //Cloth Config slug
+	mainFile.addRequirement('fabric-api') //Fabric API slug
 	mainFile.addOptional('modmenu')
-	mainFile.addRequirement('kiris-lib')
 	mainFile.changelog = rootProject.file("changelog.md").text
 	mainFile.changelogType = 'text'
 }
@@ -266,6 +251,6 @@ task curseforge(type: TaskPublishCurseForge) {
 tasks.curseforge.dependsOn tasks.assemble
 
 task publishToModHosts {
-	publishToModHosts.dependsOn tasks.modrinth
-	publishToModHosts.dependsOn tasks.curseforge
+	publishToModHosts.dependsOn modrinth
+	publishToModHosts.dependsOn curseforge
 }
