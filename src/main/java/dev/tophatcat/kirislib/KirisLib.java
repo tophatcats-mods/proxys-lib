@@ -20,13 +20,14 @@
  */
 package dev.tophatcat.kirislib;
 
-import net.fabricmc.api.ModInitializer;
+import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
 public class KirisLib implements ModInitializer {
 
     public static final String MOD_ID = "kirislib";
 
     @Override
-    public void onInitialize() {
+    public void onInitialize(ModContainer container) {
     }
 }

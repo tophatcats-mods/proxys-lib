@@ -1,0 +1,68 @@
+{
+	"schema_version": 1,
+  "quilt_loader": {
+    "id": "kirislib",
+    "group": "${group}",
+    "version": "${version}",
+    "metadata": {
+      "name": "Kiri's Lib",
+      "description": "A library mod containing things that my mods use to save time duplicating code that I already have.",
+      "contributors": {
+        "KiriCattus": "Owner/Author"
+      },
+      "authors": [
+        {
+          "name": "KiriCattus",
+          "contact": {
+            "github": "KiriCattus",
+            "homepage": "https://tophatcat.dev"
+          }
+        }
+      ],
+      "contact": {
+        "homepage": "https://modrinth.com/mod/kirislib",
+        "issues": "https://github.com/tophatcats-mods/kiris-lib/issues",
+        "sources": "https://github.com/tophatcats-mods/kiris-lib"
+      },
+      "license": {
+        "name": "Lesser General Public License v2.1",
+        "id": "LGPL-2.1",
+        "url": "https://github.com/tophatcats-mods/kiris-lib/blob/dev/LICENSE.md"
+      },
+      "icon": "assets/kirislib/logo.png"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "entrypoints": {
+      "init": [
+        "dev.tophatcat.kirislib.KirisLib"
+      ]
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "versions": ">=0.20.2"
+      },
+      {
+        "id": "quilted_fabric_api",
+        "versions": ">=7.2.1"
+      },
+      {
+        "id": "minecraft",
+        "versions": "=1.20.1"
+      }
+    ]
+  },
+  "mc-publish": {
+    "loaders": ["quilt"],
+    "curseforge": 280547,
+    "modrinth": "M6agkTxA"
+  },
+  "modmenu": {
+    "links": {
+      "modmenu.discord": "https://discord.tophatcat.dev",
+      "modmenu.modrinth": "https://modrinth.com/mod/kirislib",
+      "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/kiris-lib"
+    },
+    "update_checker": true
+  }
+}

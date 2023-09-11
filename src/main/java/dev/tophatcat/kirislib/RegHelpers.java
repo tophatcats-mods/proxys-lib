@@ -21,11 +21,11 @@
 package dev.tophatcat.kirislib;
 
 import com.google.common.base.Suppliers;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -38,32 +38,32 @@ import java.util.function.Supplier;
 public class RegHelpers {
 
     public static <T extends Block> Supplier<T> createBlock(
-        Identifier identifier, Supplier<T> block, Map<Identifier, Supplier<T>> blockMap) {
+        ResourceLocation resourceLocation, Supplier<T> block, Map<ResourceLocation, Supplier<T>> blockMap) {
         var wrapped = Suppliers.memoize(block::get);
-        blockMap.put(identifier, wrapped);
+        blockMap.put(resourceLocation, wrapped);
         return wrapped;
     }
 
     public static <T extends Block> Supplier<T> createBlockWithItem(
-        Identifier identifier, Supplier<T> block, Map<Identifier, Supplier<T>> blockMap,
-        Map<Identifier, Supplier<Item>> itemMap) {
+        ResourceLocation resourceLocation, Supplier<T> block, Map<ResourceLocation, Supplier<T>> blockMap,
+        Map<ResourceLocation, Supplier<Item>> itemMap) {
         var wrapped = Suppliers.memoize(block::get);
-        blockMap.put(identifier, wrapped);
-        createBasicItem(identifier, () -> new BlockItem(wrapped.get(),
-            new Item.Settings()), itemMap);
+        blockMap.put(resourceLocation, wrapped);
+        createBasicItem(resourceLocation, () -> new BlockItem(wrapped.get(),
+            new Item.Properties()), itemMap);
         return wrapped;
     }
 
     public static <T extends Item> Supplier<T> createBasicItem(
-        Identifier identifier, Supplier<T> item, Map<Identifier, Supplier<T>> itemMap) {
+        ResourceLocation identifier, Supplier<T> item, Map<ResourceLocation, Supplier<T>> itemMap) {
         var wrapped = Suppliers.memoize(item::get);
         itemMap.put(identifier, wrapped);
         return wrapped;
     }
 
-    public static SoundEvent createSound(Identifier identifier, Map<SoundEvent, Identifier> soundMap) {
-        var soundEvent = SoundEvent.of(identifier);
-        soundMap.put(soundEvent, identifier);
+    public static SoundEvent createSound(ResourceLocation resourceLocation, Map<SoundEvent, ResourceLocation> soundMap) {
+        var soundEvent = SoundEvent.createVariableRangeEvent(resourceLocation);
+        soundMap.put(soundEvent, resourceLocation);
         return soundEvent;
     }
 }
