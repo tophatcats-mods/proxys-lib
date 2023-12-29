@@ -5,13 +5,11 @@ on:
     branches:
       - dev
     paths-ignore:
-      - '.github/**'
       - '*.md'
   pull_request:
     branches:
       - dev
     paths-ignore:
-      - '.github/**'
       - '*.md'
 
 jobs:
