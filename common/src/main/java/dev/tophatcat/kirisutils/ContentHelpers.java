@@ -13,7 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -83,63 +83,63 @@ public class ContentHelpers {
 
     public static Supplier<Block> makePillarBlock(ResourceLocation id) {
         return createBlockWithItem(id, () -> new RotatedPillarBlock(
-            Block.Properties.copy(Blocks.OAK_LOG)), BLOCKS, ITEMS);
+            Block.Properties.ofFullCopy(Blocks.OAK_LOG)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makePlanksBlock(ResourceLocation id) {
         return createBlockWithItem(id, () -> new Block(
-            Block.Properties.copy(Blocks.OAK_PLANKS)), BLOCKS, ITEMS);
+            Block.Properties.ofFullCopy(Blocks.OAK_PLANKS)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeLeavesBlock(ResourceLocation id) {
         return createBlockWithItem(id, () -> new LeavesBlock(
-            Block.Properties.copy(Blocks.OAK_LEAVES)), BLOCKS, ITEMS);
+            Block.Properties.ofFullCopy(Blocks.OAK_LEAVES)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeSlabBlock(ResourceLocation id) {
         return createBlockWithItem(id, () -> new SlabBlock(
-            Block.Properties.copy(Blocks.OAK_SLAB)), BLOCKS, ITEMS);
+            Block.Properties.ofFullCopy(Blocks.OAK_SLAB)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeFenceBlock(ResourceLocation id) {
         return createBlockWithItem(id, () -> new FenceBlock(
-            Block.Properties.copy(Blocks.OAK_FENCE)), BLOCKS, ITEMS);
+            Block.Properties.ofFullCopy(Blocks.OAK_FENCE)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeGateBlock(ResourceLocation id) {
-        return createBlockWithItem(id, () -> new FenceGateBlock(
-            Block.Properties.copy(Blocks.OAK_FENCE_GATE), WoodType.OAK), BLOCKS, ITEMS);
+        return createBlockWithItem(id, () -> new FenceGateBlock(WoodType.OAK,
+            Block.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeButtonBlock(ResourceLocation id) {
-        return createBlockWithItem(id, () -> new ButtonBlock(
-            Block.Properties.copy(Blocks.OAK_BUTTON), BlockSetType.OAK, 30, true), BLOCKS, ITEMS);
+        return createBlockWithItem(id, () -> new ButtonBlock(BlockSetType.OAK, 30,
+            Block.Properties.ofFullCopy(Blocks.OAK_BUTTON)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makePressurePlateBlock(ResourceLocation id) {
-        return createBlockWithItem(id, () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING,
-                Block.Properties.copy(Blocks.OAK_PRESSURE_PLATE), BlockSetType.OAK), BLOCKS, ITEMS);
+        return createBlockWithItem(id, () -> new PressurePlateBlock(BlockSetType.OAK,
+            Block.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeTrapdoorBlock(ResourceLocation id) {
-        return createBlockWithItem(id, () -> new TrapDoorBlock(
-            Block.Properties.copy(Blocks.OAK_TRAPDOOR), BlockSetType.OAK), BLOCKS, ITEMS);
+        return createBlockWithItem(id, () -> new TrapDoorBlock(BlockSetType.OAK,
+            Block.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeDoorBlock(ResourceLocation id) {
-        return createBlockWithItem(id, () -> new DoorBlock(
-            Block.Properties.copy(Blocks.OAK_DOOR).strength(3.0F).noOcclusion().ignitedByLava(),
-                BlockSetType.OAK), BLOCKS, ITEMS);
+        return createBlockWithItem(id, () -> new DoorBlock(BlockSetType.OAK,
+            Block.Properties.ofFullCopy(Blocks.OAK_DOOR).strength(3.0F)
+                .noOcclusion().ignitedByLava()), BLOCKS, ITEMS);
     }
 
-    public static Supplier<Block> makeSaplingBlock(ResourceLocation id, AbstractTreeGrower generator) {
+    public static Supplier<Block> makeSaplingBlock(ResourceLocation id, TreeGrower generator) {
         return createBlockWithItem(id, () -> new SaplingBlock(generator,
-                Block.Properties.copy(Blocks.OAK_SAPLING)), BLOCKS, ITEMS);
+                Block.Properties.ofFullCopy(Blocks.OAK_SAPLING)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Block> makeStairsBlock(ResourceLocation id, BlockState blockState) {
         return createBlockWithItem(id, () -> new StairBlock(blockState,
-                Block.Properties.copy(Blocks.OAK_STAIRS)), BLOCKS, ITEMS);
+                Block.Properties.ofFullCopy(Blocks.OAK_STAIRS)), BLOCKS, ITEMS);
     }
 
     public static Supplier<Item> makeSignItem(ResourceLocation id, Block signBlock, Block wallSignBlock) {
@@ -148,13 +148,13 @@ public class ContentHelpers {
     }
 
     public static Supplier<Block> makeFloorSignBlock(ResourceLocation id, WoodType signType) {
-        return createBlock(id, () -> new StandingSignBlock(
-            Block.Properties.copy(Blocks.OAK_SIGN), signType), BLOCKS);
+        return createBlock(id, () -> new StandingSignBlock(signType,
+            Block.Properties.ofFullCopy(Blocks.OAK_SIGN)), BLOCKS);
     }
 
     public static Supplier<Block> makeWallSignBlock(ResourceLocation id, WoodType woodType) {
-        return createBlock(id, () -> new WallSignBlock(
-            Block.Properties.copy(Blocks.OAK_WALL_SIGN), woodType), BLOCKS);
+        return createBlock(id, () -> new WallSignBlock(woodType,
+            Block.Properties.ofFullCopy(Blocks.OAK_WALL_SIGN)), BLOCKS);
     }
 
     public static Supplier<Item> makeHangingSignItem(ResourceLocation id,
@@ -164,12 +164,12 @@ public class ContentHelpers {
     }
 
     public static Supplier<Block> makeHangingSignBlock(ResourceLocation id, WoodType signType) {
-        return createBlock(id, () -> new CeilingHangingSignBlock(
-            Block.Properties.copy(Blocks.OAK_HANGING_SIGN), signType), BLOCKS);
+        return createBlock(id, () -> new CeilingHangingSignBlock(signType,
+            Block.Properties.ofFullCopy(Blocks.OAK_HANGING_SIGN)), BLOCKS);
     }
 
     public static Supplier<Block> makeWallHangingSignBlock(ResourceLocation id, WoodType signType) {
-        return createBlock(id, () -> new WallHangingSignBlock(
-            Block.Properties.copy(Blocks.OAK_WALL_HANGING_SIGN), signType), BLOCKS);
+        return createBlock(id, () -> new WallHangingSignBlock(signType,
+            Block.Properties.ofFullCopy(Blocks.OAK_WALL_HANGING_SIGN)), BLOCKS);
     }
 }
