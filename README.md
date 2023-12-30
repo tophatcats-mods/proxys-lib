@@ -3,15 +3,15 @@
 
 <p>
 <a href="https://discord.tophatcat.dev">
-    <img src="https://img.shields.io/badge/Discord-CattusMods-brightgreen.svg?style=flat&logo=Discord"/>
+    <img src="https://img.shields.io/badge/Discord-CattusMods-brightgreen.svg?style=flat&logo=Discord" alt="Discord server invite."/>
 </a>
 
 <a href="https://tophatcat.dev/">
-    <img src="https://img.shields.io/badge/Website-tophatcat.dev-brightgreen.svg?style=flat"/>
+    <img src="https://img.shields.io/badge/Website-tophatcat.dev-brightgreen.svg?style=flat" alt="Website link."/>
 </a>
 
 <a href="https://github.com/kiris-mods/kiris-utils/commits/dev">
-    <img src="https://img.shields.io/github/last-commit/kiris-mods/kiris-utils.svg">
+    <img src="https://img.shields.io/github/last-commit/kiris-mods/kiris-utils.svg" alt="Latest commit.">
 </a>
 </p>
 
