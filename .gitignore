@@ -13,6 +13,7 @@ out
 *.iws
 *.iml
 .idea/*
+buildSrc/src/main/groovy/.idea/*
 !.idea/scopes
 
 # Gradle
@@ -23,6 +24,8 @@ build
 eclipse
 run
 runs
+*/reports/*
+TODO.txt
 
 # Visual Studio Code
 .settings/
@@ -31,3 +34,6 @@ bin/
 
 # MacOS
 *.DS_Store
+/common/src/generated/resources/.cache
+buildSrc/build
+buildSrc/.gradle

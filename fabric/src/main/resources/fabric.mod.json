@@ -1,30 +1,31 @@
 {
   "schemaVersion": 1,
-  "id": "kirisutils",
+  "id": "${mod_id}",
   "version": "${version}",
   "name": "${mod_name}",
   "description": "${description}",
   "authors": [
-    "${mod_author}"
+    "${author}"
   ],
   "contact": {
     "homepage": "${display_url}",
-    "sources": "${source}",
-    "issues": "${source}/issues"
+    "sources": "${mod_source}",
+    "issues": "${mod_source}/issues"
   },
   "license": "${license}",
   "icon": "logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.tophatcat.kirisutils.KirisUtils"
+      "dev.tophatcat.cattuslib.CattusLib"
     ]
   },
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}",
-    "java": ">=17"
+    "resourcefulconfig": ">=${resourceful_config_fabric_version}",
+    "java": ">=${java_version}"
   },
   "custom": {
     "modmenu": {
@@ -34,6 +35,17 @@
         "modmenu.curseforge": "${curseforge_url}"
       },
       "update_checker": true
+    },
+    "mc-publish": {
+      "curseforge": "${curseforge_id}",
+      "modrinth": "${modrinth_id}",
+      "loaders": [
+        "fabric"
+      ],
+      "dependencies": [
+        "fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}",
+        "resourcefulconfig(required){modrinth:M1953qlQ}{curseforge:714059}"
+      ]
     }
   }
 }

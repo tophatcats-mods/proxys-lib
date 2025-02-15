@@ -1,16 +1,15 @@
-name: Run a test build.
+name: Build Status
 
 on:
   push:
-    branches:
-      - dev
     paths-ignore:
       - '*.md'
   pull_request:
-    branches:
-      - dev
     paths-ignore:
       - '*.md'
+
+env:
+  JAVA_VERSION: 21
 
 jobs:
   build:
@@ -19,19 +18,48 @@ jobs:
       - name: Checkout latest commit.
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 17
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'microsoft'
+          cache: 'gradle'
 
-      - name: Grant execute permission for gradlew
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Grant Gradle execute permissions
         run: chmod +x ./gradlew
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: 8.1.1
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Upload build artifacts (Common)
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-common-${{ github.sha }}
+          path: |
+            common/build/libs/*.jar
+            !common/build/libs/*-dev.jar
+
+      - name: Upload build artifacts (NeoForge)
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-neoforge-${{ github.sha }}
+          path: |
+            neoforge/build/libs/*.jar
+            !neoforge/build/libs/*-dev.jar
+
+      - name: Upload build artifacts (Fabric)
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-fabric-${{ github.sha }}
+          path: |
+            fabric/build/libs/*.jar
+            !fabric/build/libs/*-dev.jar
+
+      - name: Run tests
+        run: ./gradlew check
